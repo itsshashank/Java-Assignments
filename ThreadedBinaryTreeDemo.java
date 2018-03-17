@@ -1,211 +1,88 @@
 import java.util.Scanner;
-
- 
-
-/** Class TBSTNode **/
-
-class TBSTNode
-
+class Node
 {
-
-    int ele;
-
-    TBSTNode left, right;
-
+    int value;
+    Node left, right;
     boolean leftThread, rightThread;
-
- 
-
-    /** Constructor **/
-
-    public TBSTNode(int ele)
-
+    public Node(int value)
     {
-
-        this(ele, null, null, true, true);
-
+        this(value, null, null, true, true);
     }
-
- 
-
-    /** Constructor **/
-
-    public TBSTNode(boolean leftThread, boolean rightThread)
-
+    public Node(boolean leftThread, boolean rightThread)
     {
-
-        this.ele = Integer.MAX_VALUE;
-
+        this.value = Integer.MAX_VALUE;
         this.left = this;
-
         this.right = this;
-
         this.leftThread = leftThread;
-
         this.rightThread = rightThread;
-
     }
-
- 
-
-    /** Constructor **/
-
-    public TBSTNode(int ele, TBSTNode left, TBSTNode right, boolean leftThread, boolean rightThread)
-
+    public Node(int value, TBSTNode left, TBSTNode right, boolean leftThread, boolean rightThread)
     {
-
-        this.ele = ele;
-
+        this.value = value;
         this.left = left;
-
         this.right = right;
-
         this.leftThread = leftThread;
-
         this.rightThread = rightThread;
-
     }
-
 }
-
- 
-
-/** Class ThreadedBinarySearchTree **/
-
-class ThreadedBinarySearchTree
-
+class ThreadedBinaryTree
 {
-
-    private TBSTNode root;
-
- 
-
-    /** Constructor **/
-
-    public ThreadedBinarySearchTree () 
-
+    private Node root;
+    public ThreadedBinaryTree () 
     {
-
-        root = new TBSTNode(true, false);      
-
+        root = new Node(true, false);      
     }
-
- 
-
-    /** Function to clear tree **/
-
     public void clear()
-
     {
-
-        root = new TBSTNode(true, false);  
-
+        root = new Node(true, false);  
     }
-
- 
-
-    /** Function to insert an element **/
-
-    public void insert(int ele) 
-
+    public void insert(int value) 
     {
-
-        TBSTNode ptr = findNode(root, ele);
-
- 
-
-        /** element already present **/
-
-        if (ptr == null)
-
+        Node ptr = findNode(root, value);
+           if (ptr == null)
             return;         
-
- 
-
-        if (ptr.ele < ele) 
-
+        if (ptr.value < value) 
         { 
-
-            TBSTNode nptr = new TBSTNode(ele, ptr, ptr.right, true, true);            
-
+            Node nptr = new Node(value, ptr, ptr.right, true, true);            
             ptr.right = nptr;
-
             ptr.rightThread = false;
-
         }
-
         else
-
         {
-
             TBSTNode nptr = new TBSTNode(ele, ptr.left, ptr, true, true);         
-
             ptr.left = nptr;
-
             ptr.leftThread = false;
-
         }
-
     }
-
- 
-
-    /** function to find node **/
-
     public TBSTNode findNode(TBSTNode r, int ele)
-
     {
-
         if (r.ele < ele)
-
         {
-
             if (r.rightThread)
 
                 return r;
 
             return findNode(r.right, ele);
-
         }
-
         else if (r.ele > ele)
-
         {
 
             if (r.leftThread)
 
                 return r;
-
             return findNode(r.left, ele);
-
         }
-
         else
-
             return null;        
-
     }
-
- 
-
-    /** Function to search for an element **/
 
     public boolean search(int ele) 
-
     {
-
         return findNode(root, ele) == null;
-
     }
 
- 
-
-    /** Function to print tree **/
-
     public void inOrder() 
-
     {
-
         TBSTNode temp = root;
 
         for (;;)
@@ -223,10 +100,6 @@ class ThreadedBinarySearchTree
         }
 
     } 
-
- 
-
-    /** Function to get inorder successor **/
 
     public TBSTNode insucc(TBSTNode tree)
 
@@ -248,10 +121,6 @@ class ThreadedBinarySearchTree
 
 }
 
- 
-
-/** Class ThreadedBinarySearchTreeTest **/
-
 public class ThreadedBinaryTreeDemo
 
 {
@@ -269,9 +138,6 @@ public class ThreadedBinaryTreeDemo
         System.out.println("Threaded Binary Search Tree Test\n");          
 
         char ch;
-
-        /**  Perform tree operations  **/
-
         do    
 
         {
@@ -283,13 +149,8 @@ public class ThreadedBinaryTreeDemo
             System.out.println("2. search");
 
             System.out.println("3. clear"); 
-
- 
-
             int choice = scan.nextInt();            
-
             switch (choice)
-
             {
 
             case 1 : 
@@ -323,23 +184,13 @@ public class ThreadedBinaryTreeDemo
                 break;   
 
             }
-
-            /**  Display tree  **/ 
-
             System.out.print("\nTree = ");
-
             tbst.inOrder();            
-
             System.out.println();
-
- 
-
             System.out.println("\nDo you want to continue (Type y or n) \n");
 
             ch = scan.next().charAt(0);                        
 
         } while (ch == 'Y'|| ch == 'y');               
-
     }
-
 }
