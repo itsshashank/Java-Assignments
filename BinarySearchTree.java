@@ -95,7 +95,7 @@ class BinaryTree extends ThreadedBinaryTree{
             return node;
         }
     }
-    public void reverceinorder(Node root){
+    public void reverseinorder(Node root){
         Node current = rightMostNode(root);
         while(current!=null){
             System.out.print(" " + current.data);
@@ -151,10 +151,10 @@ class BinarySearchTree{
                         switch(tc){
                             case 1: bt.inorder(bt.root);
                                     break;
-                            case 2: /*bt.preorder(bt.root);
+                            case 2: /*bt.postorder(bt.root);
                                     System.out.println();*/
                                     break;
-                            case 3: bt.reverceinorder(bt.root);
+                            case 3: bt.reverseinorder(bt.root);
                                     break;
                             default:
                         }
