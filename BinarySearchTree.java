@@ -1,8 +1,7 @@
 import java.util.Scanner;
 
 class Node{
-    Node left;
-    Node right;
+    Node left,right;
     int data;
     boolean leftThread,rightThread;
     public Node(int data){
@@ -15,13 +14,14 @@ class Node{
 }
 
 class ThreadedBinaryTree {
-    public static Node root;
+    public Node root;
     public void insert(int id){
         Node newNode = new Node(id);
         Node current = root;
         Node parent = null;
         while(true){
             parent = current;
+            //new value less than current node
             if(id<current.data){
                 if(!current.leftThread)
                 {
@@ -33,8 +33,7 @@ class ThreadedBinaryTree {
                         newNode.rightThread = true;
                         return;
                     }
-                }
-              else{
+                }else{
                     Node temp = current.left;
                     current.left = newNode;
                     newNode.left = temp;
