@@ -30,4 +30,4 @@ Traversing the threaded binary tree will be quite easy, no need of any recursion
 
 ## Reverse In-order Traversal
 Its similar to that of In-order just that we need to do in reverse order
-![Reverse inorder](/images/carbon.png)
+![Reverse inorder](/images/revinorder.png)

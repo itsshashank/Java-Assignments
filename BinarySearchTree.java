@@ -13,7 +13,7 @@ class Node{
 }
 
 class ThreadedBinaryTree {
-    public static Node root;
+    public Node root;
     public void insert(int id){
         Node newNode = new Node(id);
         newNode.rightThread = false;
