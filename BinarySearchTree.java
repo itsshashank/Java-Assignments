@@ -7,8 +7,10 @@ class Node{
     boolean leftThread,rightThread;
     public Node(int data){
         this.data = data;
-        rightThread = false;
-        leftThread = false;
+        this.rightThread = false;
+        this.leftThread = false;
+        this.left = null;
+        this.right = null;
     }
 }
 
@@ -16,9 +18,6 @@ class ThreadedBinaryTree {
     public Node root;
     public void insert(int id){
         Node newNode = new Node(id);
-        newNode.rightThread = false;
-        newNode.left = null;
-        newNode.right = null;
         Node current = root;
         Node parent = null;
         while(true){
