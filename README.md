@@ -31,20 +31,3 @@ Traversing the threaded binary tree will be quite easy, no need of any recursion
 ## Reverse In-order Traversal
 Its similar to that of In-order just that we need to do in reverse order
 ![Reverse inorder](/images/carbon.png)
-```java
-  while(current!=null){
-     System.out.print(" " + current.data);
-     if(current.leftThread)
-          current = current.left;
-     else 
-         {   if(current.left != null)
-                 { current = current.left;
-                    if(current.rightThread)
-                         continue;
-                    else
-                         current = rightMostNode(current.left);
-                  }
-               else break;   
-          }
-        }
-```
