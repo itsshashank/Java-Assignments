@@ -63,7 +63,72 @@ class ThreadedBinaryTree {
             }
         }
     }
-    
+    public void delete(int key) {
+        Node dest = root.left, p = root;
+        while(true) {
+            if (dest.data < key) {
+                if (dest.rightThread) return; // key not found
+                p = dest;
+                dest = dest.right;
+            } else if (dest.data > key) {
+                if (dest.leftThread) return; // key not found
+                p = dest;
+                dest = dest.left;
+            } else {
+                break; // found the key now we need to replace it
+            }
+        }
+        Node target = dest;
+        if (!dest.rightThread && !dest.leftThread) { // key node has two children
+            p = dest;
+            // find largest node at left child
+            target = dest.left;
+            while (!target.rightThread) {
+                p = target;
+                target = target.right;
+            }
+            dest.data = target.data; // replace key
+        }
+        if (p.data >= target.data) {
+            if (target.rightThread && target.leftThread) {
+                p.left = target.left;
+                p.leftThread = true;
+            } else if (target.rightThread) {
+                Node largest = target.left;
+                while (!largest.rightThread) {
+                    largest = largest.right;
+                }
+                largest.right = p;
+                p.left = target.left;
+            } else {
+                Node smallest = target.right;
+                while (!smallest.leftThread) {
+                    smallest = smallest.left;
+                }
+                smallest.left = target.left;
+                p.left = target.right;
+            }
+        } else {
+            if (target.rightThread && target.leftThread) {
+                p.right = target.right;
+                p.rightThread = true;
+            } else if (target.rightThread) {
+                Node largest = target.left;
+                while (!largest.rightThread) {
+                    largest = largest.right;
+                }
+                largest.right =  target.right;
+                p.right = target.left;
+            } else {
+                Node smallest = target.right;
+                while (!smallest.leftThread) {
+                    smallest = smallest.left;
+                }
+                smallest.left = p;
+                p.right = target.right;
+            }
+        }
+    }
 }
 class BinaryTree extends ThreadedBinaryTree{
     public void inorder(Node root){
