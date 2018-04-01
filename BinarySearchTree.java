@@ -7,10 +7,10 @@ class Node{
     boolean leftThread,rightThread;
     public Node(int data){
         this.data = data;
-        rightThread = false;
-        leftThread = false;
-        newNode.left = null;
-        newNode.right = null;
+        this.rightThread = false;
+        this.leftThread = false;
+        this.left = null;
+        this.right = null;
     }
 }
 
