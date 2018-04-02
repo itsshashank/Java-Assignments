@@ -203,13 +203,15 @@ class BinarySearchTree{
             System.out.println("1.Insert \n2.Delete \n3.Traversal\n4.Exit\nEnter your choice:");
             ch = sc.nextInt();
             switch(ch){
-                case 1: System.out.print("Enter the data for node:");
+                case 1://insert 
+                         System.out.print("Enter the data for node:");
                          data=sc.nextInt();
                          bt.insert(data);
                         break;
-                case 2: 
+                case 2://delete 
                         break;
-                case 3:System.out.print("Traversal menu\n1.Inorder\n2.postorder\n3.reverceinorder\nyour choice:");
+                case 3://traversal
+                        System.out.print("Traversal menu\n1.Inorder\n2.Postorder\n3.Reverse Inorder\nYour choice : ");
                         int tc =sc.nextInt();
                         switch(tc){
                             case 1: bt.inorder(bt.root);
