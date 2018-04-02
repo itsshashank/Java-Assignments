@@ -1,5 +1,5 @@
 import java.util.Scanner;
-
+import java.util.concurrent.TimeUnit; //for testing purposes
 class Node{
     Node left,right;
     int data;
@@ -18,46 +18,52 @@ class ThreadedBinaryTree {
     public void insert(int id){
         Node newNode = new Node(id);
         Node current = root;
-        Node parent = null;
+
         while(true){
-            parent = current;
-            //new value less than current node
+            //new value smaller than current node
             if(id<current.data){
-                if(!current.leftThread)
-                {
-                    current = current.left;
-                    if(current==null){
-                        parent.left = newNode;
-                        //parent.leftThread = true;
-                        newNode.right = parent;
-                        newNode.rightThread = true;
-                        return;
-                    }
-                }else{
-                    Node temp = current.left;
-                    current.left = newNode;
-                    newNode.left = temp;
-                    //newNode.leftThread=true;
-                    return;
-              }  
-            }else{
-                if(current.rightThread==false){
-                    current = current.right;
-                    if(current==null){
-                        parent.right = newNode;
-                        newNode.left = parent;
-                        newNode.leftThread = true;
-                        return;
-                    }
-                }else{
-                    Node temp = current.right;
-                    current.right = newNode;
-                    newNode.right = temp;
+                //check if left child exists
+                if(current.leftThread || current.left==null){//thread means no child
+                    //if left child doesn't exist, add as left child
+                    //add threads to newNode as it has no child
+                    newNode.right=current;
                     newNode.rightThread=true;
-                    newNode.left = current;
-                    newNode.leftThread = true;
-                    return;
+                    //left thread will be parent of parent (thread of parent is now thread of child)
+                    newNode.left=current.left;
+                    current.left=newNode;
+                    //set the thread value as false since it now has child 
+                    current.leftThread=false;
+                    break;
                 }
+                else{
+                    //keep comparing with childs
+                    current=current.left;
+                }
+            }
+            //new value greater than current node
+            else if(id>current.data){
+                //check if right child exists
+                if(current.rightThread || current.right==null){//thread means no child
+                    //if right child doesn't exist, add as right child
+                    //add threads to newNode as it has no child
+                    newNode.left=current;
+                    newNode.leftThread=true;
+                    //right thread will be parent of parent (thread of parent is now thread of child)
+                    newNode.right=current.right;
+                    current.right=newNode;
+                    //set the thread value as false since it now has child
+                    current.rightThread=false;
+                    break;
+                }
+                else{
+                    //keep comparing with childs
+                    current=current.right;
+                }
+            }
+            //value already exists (id==current.data)
+            else{
+                System.out.println("\nValue already exists");
+                break;
             }
         }
     }
@@ -130,64 +136,27 @@ class ThreadedBinaryTree {
 }
 class BinaryTree extends ThreadedBinaryTree{
     public void inorder(Node root){
-        Node current = leftMostNode(root);
-        while(current!=null){
-            System.out.print(" " + current.data);
-            if(current.rightThread)
-                current = current.right;
-            else 
-                {    if(current.right != null)
-                    { current = current.right;
-                        if(current.leftThread)
-                        continue;
-                    else
-                        current = rightMostNode(current.right);
-                    }
-                else break; 
-                }
-            }    
-        System.out.println();
+      
+
     }
-    public Node leftMostNode(Node node){
-        if(node==null){
-            return null;
-        }else{
-            while(node.left!=null){
-                node = node.left;
-            }
-            return node;
+    public void postorder(Node root){
+    }
+    //function to find left most child
+    public Node leftMostChild(Node node){
+        while(node.left!=null){
+            node = node.left;
         }
+        return node;
     }
     public void reverseinorder(Node root){
-        Node current = rightMostNode(root);
-        while(current!=null){
-            System.out.print(" " + current.data);
-            if(current.leftThread)
-                current = current.left;
-            else 
-                {   if(current.left != null)
-                       { current = current.left;
-                    if(current.rightThread)
-                    continue;
-                    else
-                    current = rightMostNode(current.left);
-                       }
-                    else break;   
-                }
-        }
-        System.out.println();
+       
     }
     public Node rightMostNode(Node node){
-        if(node == null){
-            return null;
-        }else{
             while(node.right != null){
                 node = node.right;
             }
             return node;
-        }
     }
-    
 }
 
 class BinarySearchTree{
@@ -216,8 +185,8 @@ class BinarySearchTree{
                         switch(tc){
                             case 1: bt.inorder(bt.root);
                                     break;
-                            case 2: /*bt.postorder(bt.root);
-                                    System.out.println();*/
+                            case 2: bt.postorder(bt.root);
+                                    System.out.println();
                                     break;
                             case 3: bt.reverseinorder(bt.root);
                                     break;
