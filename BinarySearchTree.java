@@ -15,6 +15,7 @@ class Node{
 
 class ThreadedBinaryTree {
     public Node root;
+   
     public void insert(int id){
         Node newNode = new Node(id);
         Node current = root;
@@ -28,8 +29,9 @@ class ThreadedBinaryTree {
                     //add threads to newNode as it has no child
                     newNode.right=current;
                     newNode.rightThread=true;
-                    //left thread will be parent of parent (thread of parent is now thread of child)
+                    //thread of parent is now thread of child
                     newNode.left=current.left;
+                    //add as child
                     current.left=newNode;
                     //set the thread value as false since it now has child 
                     current.leftThread=false;
@@ -48,8 +50,9 @@ class ThreadedBinaryTree {
                     //add threads to newNode as it has no child
                     newNode.left=current;
                     newNode.leftThread=true;
-                    //right thread will be parent of parent (thread of parent is now thread of child)
+                    //thread of parent is now thread of child
                     newNode.right=current.right;
+                    //add as child
                     current.right=newNode;
                     //set the thread value as false since it now has child
                     current.rightThread=false;
@@ -136,23 +139,38 @@ class ThreadedBinaryTree {
 }
 class BinaryTree extends ThreadedBinaryTree{
     public void inorder(Node root){
-      
-
+        //start at left most node (smallest)
+        Node current=leftMostChild(root);
+        while(current!=null){
+            System.out.print(current.data + " ");
+            if(current.rightThread){
+                current=current.right;
+            }
+            else{
+                current=current.right;
+                current=leftMostChild(current);
+            }
+            // System.out.print(current.data + "derp");
+            // try{
+            //     TimeUnit.SECONDS.sleep(5);
+            // }catch(Exception e){}
+        }
+        System.out.println();
+    }
+    public void reverseinorder(Node root){
     }
     public void postorder(Node root){
     }
     //function to find left most child
     public Node leftMostChild(Node node){
-        while(node.left!=null){
+        while(node.left!=null && !node.leftThread ){
             node = node.left;
         }
         return node;
     }
-    public void reverseinorder(Node root){
        
-    }
-    public Node rightMostNode(Node node){
-            while(node.right != null){
+    public Node rightMostChild(Node node){
+            while(node.right!=null){
                 node = node.right;
             }
             return node;
