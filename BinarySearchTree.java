@@ -72,106 +72,46 @@ class ThreadedBinaryTree {
             }
         }
     }
-    public void delete(int key) {
-        Node dest = root.left, p = root;
-        while(true) {
-            if (dest.data < key) {
-                if (dest.rightThread) return; // key not found
-                p = dest;
-                dest = dest.right;
-            } else if (dest.data > key) {
-                if (dest.leftThread) return; // key not found
-                p = dest;
-                dest = dest.left;
-            } else {
-                break; // found the key now we need to replace it
-            }
-        }
-        Node target = dest;
-        if (!dest.rightThread && !dest.leftThread) { // key node has two children
-            p = dest;
-            // find largest node at left child
-            target = dest.left;
-            while (!target.rightThread) {
-                p = target;
-                target = target.right;
-            }
-            dest.data = target.data; // replace key
-        }
-        if (p.data >= target.data) {
-            if (target.rightThread && target.leftThread) {
-                p.left = target.left;
-                p.leftThread = true;
-            } else if (target.rightThread) {
-                Node largest = target.left;
-                while (!largest.rightThread) {
-                    largest = largest.right;
-                }
-                largest.right = p;
-                p.left = target.left;
-            } else {
-                Node smallest = target.right;
-                while (!smallest.leftThread) {
-                    smallest = smallest.left;
-                }
-                smallest.left = target.left;
-                p.left = target.right;
-            }
-        } else {
-            if (target.rightThread && target.leftThread) {
-                p.right = target.right;
-                p.rightThread = true;
-            } else if (target.rightThread) {
-                Node largest = target.left;
-                while (!largest.rightThread) {
-                    largest = largest.right;
-                }
-                largest.right =  target.right;
-                p.right = target.left;
-            } else {
-                Node smallest = target.right;
-                while (!smallest.leftThread) {
-                    smallest = smallest.left;
-                }
-                smallest.left = p;
-                p.right = target.right;
-            }
-        }
-    }
 }
 class BinaryTree extends ThreadedBinaryTree{
     public void inorder(Node root){
+        System.out.println("*******Inorder traversal*******");
         //start at left most node (smallest)
         Node current=leftMostChild(root);
         while(current!=null){
             System.out.print(current.data + " ");
-            if(current.rightThread){
+            if(current.rightThread)
                 current=current.right;
-            }
-            else{
+            else
                 current=leftMostChild(current.right);
-            }
         }
         System.out.println();
     }
-    public void reverseinorder(Node root){
-    }
-    public void postorder(Node root){
+    public void reverseInorder(Node root){
+        System.out.println("*******Reverse inorder traversal*******");
+        Node current=rightMostChild(root);
+        while(current!=null){
+            System.out.print(current.data + " ");
+            if(current.leftThread)
+                current=current.left;
+            else
+                current=rightMostChild(current.left);
+        }
+        System.out.println();
     }
     //function to find left most child
     public Node leftMostChild(Node node){
         if(node != null)
-            while(node.left!=null && !node.leftThread ){
+            while(node.left!=null && !node.leftThread)
                node = node.left;
-            }
         return node;
     }
-       
+    //function to find right most child   
     public Node rightMostChild(Node node){
-            while(node.right!=null){
+        if(node != null)
+            while(node.right!=null && !node.rightThread)
                 node = node.right;
-            }
-            return node;
+        return node;
     }
 }
 
@@ -185,29 +125,19 @@ class BinarySearchTree{
         int ch = 4;
         do{
             System.out.println("Binary Tree Menu");
-            System.out.println("1.Insert \n2.Delete \n3.Traversal\n4.Exit\nEnter your choice:");
+            System.out.println("1.Insert \n2.Inorder Traversal\n3.Reverse Inorder Traversal\n4.Exit\nEnter your choice:");
             ch = sc.nextInt();
             switch(ch){
                 case 1://insert 
-                         System.out.print("Enter the data for node:");
-                         data=sc.nextInt();
-                         bt.insert(data);
+                        System.out.print("Enter the data for node:");
+                        data=sc.nextInt();
+                        bt.insert(data);
                         break;
-                case 2://delete 
+                case 2://inorder traversal
+                        bt.inorder(bt.root);
                         break;
-                case 3://traversal
-                        System.out.print("Traversal menu\n1.Inorder\n2.Postorder\n3.Reverse Inorder\nYour choice : ");
-                        int tc =sc.nextInt();
-                        switch(tc){
-                            case 1: bt.inorder(bt.root);
-                                    break;
-                            case 2: bt.postorder(bt.root);
-                                    System.out.println();
-                                    break;
-                            case 3: bt.reverseinorder(bt.root);
-                                    break;
-                            default:
-                        }
+                case 3://reverse inorder traversal
+                        bt.reverseInorder(bt.root);
                         break;        
                 case 4: break;//return;        
                 default: System.out.println("Invalid operation!");
