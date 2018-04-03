@@ -31,6 +31,7 @@ class ThreadedBinaryTree {
                     newNode.rightThread=true;
                     //thread of parent is now thread of child
                     newNode.left=current.left;
+                    newNode.leftThread=current.leftThread;
                     //add as child
                     current.left=newNode;
                     //set the thread value as false since it now has child 
@@ -52,6 +53,7 @@ class ThreadedBinaryTree {
                     newNode.leftThread=true;
                     //thread of parent is now thread of child
                     newNode.right=current.right;
+                    newNode.rightThread=current.rightThread;
                     //add as child
                     current.right=newNode;
                     //set the thread value as false since it now has child
@@ -147,13 +149,8 @@ class BinaryTree extends ThreadedBinaryTree{
                 current=current.right;
             }
             else{
-                current=current.right;
-                current=leftMostChild(current);
+                current=leftMostChild(current.right);
             }
-            // System.out.print(current.data + "derp");
-            // try{
-            //     TimeUnit.SECONDS.sleep(5);
-            // }catch(Exception e){}
         }
         System.out.println();
     }
@@ -163,9 +160,10 @@ class BinaryTree extends ThreadedBinaryTree{
     }
     //function to find left most child
     public Node leftMostChild(Node node){
-        while(node.left!=null && !node.leftThread ){
-            node = node.left;
-        }
+        if(node != null)
+            while(node.left!=null && !node.leftThread ){
+               node = node.left;
+            }
         return node;
     }
        
