@@ -9,6 +9,11 @@ class Node{
         left = right = null;
         leftThread = rightThread = false;
     }
+    public void delNode(Node node){
+        node.data = -999;
+        node.left = node.right = null;
+        node.leftThread = node.rightThread = false;
+    }
 }
 class ThreadedBinaryTree{
     public Node root;
@@ -112,18 +117,24 @@ class ThreadedBinaryTree{
         }
         //now current is the target
         if(!current.leftThread && current.rightThread)
-        {   current = current.right;
+        {   Node temp = current;
+            current = current.right;
             current.left = null;
+            root.delNode(temp);
+            
         }
         else if(current.leftThread && !current.rightThread)
-        {
+        {   Node temp = current;
             current = current.left;
             current.right = null;
+            root.delNode(temp);
         }
         else{
-            Node temp = current.right;
+            Node temp = current;
+            Node temp1 = current.right;
             current = current.left;
             temp.left = null;
+            root.delNode(temp);
         }    
     inorder(root);        
     }
