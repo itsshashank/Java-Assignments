@@ -91,6 +91,42 @@ class ThreadedBinaryTree{
             }
         return;
     }
+    //function to delete a node
+    public void delete(int key){
+        if(key == root.data)
+        {
+            System.out.println("Can't Delete The Root!");
+            return;
+        }
+        Node current = leftMostChild(root);
+        while(current != null && current.data != key){
+            if(current.rightThread)
+                current=current.right;
+            else
+                current=leftMostChild(current.right);
+        }
+        if(current == null){
+            //Serch node doesnt' exist
+            System.out.println("The node doesn't exist!");
+            return;
+        }
+        //now current is the target
+        if(!current.leftThread && current.rightThread)
+        {   current = current.right;
+            current.left = null;
+        }
+        else if(current.leftThread && !current.rightThread)
+        {
+            current = current.left;
+            current.right = null;
+        }
+        else{
+            Node temp = current.right;
+            current = current.left;
+            temp.left = null;
+        }    
+    inorder(root);        
+    }
     //functions to do inorder traversals
     public void inorder(Node root){
         Node current=leftMostChild(root);
@@ -228,18 +264,21 @@ class Assignment{
         System.out.print("Enter the data for the root:");
         data = sc.nextInt();
         BinaryTree bt = new BinaryTree(data);
-        
         int ch = 4;
         do{
             System.out.println("==========Binary Tree==========");
-            System.out.println("1.Insert \n2.Traversal\n3.Exit\nEnter your choice:");
+            System.out.println("1.Insert \n2.Delete\n3.Traversal\n4.Exit\nEnter your choice:");
             ch = sc.nextInt();
             switch(ch){
                 case 1: System.out.print("Enter the data for node:");
                          data=sc.nextInt();
                          bt.insert(data);//bt.insert(data,bt.root);
                         break;
-                case 2: System.out.print("==========Traversal==========\n1.Inorder\n2.ReverseInorder\n3.Preorder\n4.Postorder\nyour choice:");
+                case 2: System.out.print("Enter the key to delete:");
+                        data=sc.nextInt();
+                        bt.delete(data);
+                        break;
+                case 3: System.out.print("==========Traversal==========\n1.Inorder\n2.ReverseInorder\n3.Preorder\n4.Postorder\nyour choice:");
                         int tc =sc.nextInt();
                         switch(tc){
                             case 1: bt.inorder(bt.root);
@@ -251,7 +290,6 @@ class Assignment{
                                     System.out.println();
                                     System.out.println("====================================");
                                     break;
-                            
                             case 4: System.out.println("==============POSTORDER==============");
                                     bt.postorder(bt.root);
                                     System.out.println();
@@ -260,7 +298,7 @@ class Assignment{
                             default:
                         }
                         break;        
-                case 3: ch =0; break;      
+                case 4: ch =0; break;
                 default: System.out.println("Invalid operation!"); 
             }
         }while(ch>0);
