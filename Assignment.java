@@ -15,6 +15,103 @@ class ThreadedBinaryTree{
     ThreadedBinaryTree(int data){
         root = new Node(data);
     }
+    public void insert(int id){
+        Node newNode;
+        Node current;
+        int parentData;
+        int ch;
+        //to display all nodes
+        inorder(root);
+       
+        System.out.print("\nEnter which node's child you want the new node to be : ");
+        parentData = Assignment.sc.nextInt();
+
+        //inorder traversal to find parent
+        current = leftMostChild(root);
+        while(current != null && current.data != parentData){
+            if(current.rightThread)
+                current=current.right;
+            else
+                current=leftMostChild(current.right);
+        }
+        if(current == null){
+            //parent doesnt' exist
+            System.out.println("The node you entered doesn't exist!\nAdding as BinarySerchTree\n");
+            insert(id,root);
+            return;
+        }
+        //now, current is parent
+        //prompt for left or right child 
+            System.out.print("\n Insert as \n1) Left child\n2) Right child\nEnter your choice : ");
+            ch=Assignment.sc.nextInt();
+            switch(ch){
+                case 1 : //left child
+                    if(current.leftThread || current.left==null){//thread means no child
+                        //if left child doesn't exist,create new node add as left child
+                        newNode=new Node(id);
+                        //add threads to newNode as it has no child
+                        newNode.right=current;
+                        newNode.rightThread=true;
+                        //thread of parent is now thread of child
+                        newNode.left=current.left;
+                        newNode.leftThread=current.leftThread;
+                        //add as child
+                        current.left=newNode;
+                        //set the thread value as false since it now has child 
+                        current.leftThread=false;
+                    }
+                    else{
+                        //replace left child
+                        newNode=current.left;
+                        newNode.data=id;
+                    }
+                    break;
+                case 2 : //right child
+                    if(current.rightThread || current.right==null){//thread means no child
+                        //if right child doesn't exist,create new node and add as right child
+                        newNode=new Node(id);
+                        //add threads to newNode as it has no child
+                        newNode.left=current;
+                        newNode.leftThread=true;
+                        //thread of parent is now thread of child
+                        newNode.right=current.right;
+                        newNode.rightThread=current.rightThread;
+                        //add as child
+                        current.right=newNode;
+                        //set the thread value as false since it now has child
+                        current.rightThread=false;
+                    }
+                    else{
+                        //replace right child
+                        newNode=current.right;
+                        newNode.data=id;
+                    }
+                    break;
+                default : System.out.println("Invalid option!");
+            }
+        return;
+    }
+    //functions to do inorder traversals
+    public void inorder(Node root){
+        Node current=leftMostChild(root);
+        System.out.println("==============INORDER==============");
+        while(current!=null){
+            System.out.print(current.data + " ");
+            if(current.rightThread)
+                current=current.right;
+            else
+                current=leftMostChild(current.right);
+        }
+        System.out.println();
+        System.out.println("====================================");
+    }
+    //function to find left most child
+    public Node leftMostChild(Node node){
+        if(node != null)
+            while(node.left!=null && !node.leftThread)
+               node = node.left;
+        return node;
+    }
     public void insert(int key,Node branch){
         Node newNode = new Node(key);
         Node current = branch;
@@ -80,20 +177,7 @@ class BinaryTree extends ThreadedBinaryTree{
     BinaryTree(int data){
         super(data);
     }
-    //functions to do inorder traversals
-    public void inorder(Node root){
-        Node current=leftMostChild(root);
-        System.out.println("==============INORDER==============");
-        while(current!=null){
-            System.out.print(current.data + " ");
-            if(current.rightThread)
-                current=current.right;
-            else
-                current=leftMostChild(current.right);
-        }
-        System.out.println();
-        System.out.println("====================================");
-    }
+    
     public void reverseInorder(Node root){
         Node current=rightMostChild(root);
         System.out.println("==============REVERSE_INORDER==============");
@@ -127,13 +211,7 @@ class BinaryTree extends ThreadedBinaryTree{
             System.out.print(current.data + " ");
         }
     }
-    //function to find left most child
-    public Node leftMostChild(Node node){
-        if(node != null)
-            while(node.left!=null && !node.leftThread)
-               node = node.left;
-        return node;
-    }
+    
     //function to find right most child   
     public Node rightMostChild(Node node){
         if(node != null)
@@ -143,8 +221,9 @@ class BinaryTree extends ThreadedBinaryTree{
     }
 }
 class Assignment{
+    public static Scanner sc;
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        sc = new Scanner(System.in);
         int data=0;
         System.out.print("Enter the data for the root:");
         data = sc.nextInt();
@@ -158,7 +237,7 @@ class Assignment{
             switch(ch){
                 case 1: System.out.print("Enter the data for node:");
                          data=sc.nextInt();
-                         bt.insert(data,bt.root);
+                         bt.insert(data);//bt.insert(data,bt.root);
                         break;
                 case 2: System.out.print("==========Traversal==========\n1.Inorder\n2.ReverseInorder\n3.Preorder\n4.Postorder\nyour choice:");
                         int tc =sc.nextInt();
